@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Higher or Lower Game</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #4CAF50;
+        }
+        .card {
+            display: inline-block;
+            padding: 10px;
+            margin: 10px;
+            border: 2px solid #4CAF50;
+            border-radius: 5px;
+            background-color: #e8f5e9;
+            width: calc(10% - 22px); /* Adjust width to fit 10 cards per row */
+            box-sizing: border-box; /* Include padding and border in the width */
+        }
+        .player {
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+        .winner {
+            text-align: center;
+            font-size: 1.5em;
+            color: #ff5722; /* Winner color */
+        }
+        .footer {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 15px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Higher or Lower Game</h1>
+
+        <div class="cards">
+            <h2>Drawn Cards</h2>
+            <div style="display: flex; flex-wrap: wrap; justify-content: center;">
+                {% for card in daily_state.cards %}
+                    <div class="card">{{ card }}</div>
+                    {% if loop.index % 10 == 0 %}
+                        <div style="flex-basis: 100%;"></div> <!-- New line after every 10 cards -->
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="players">
+            <h2>Player Choices</h2>
+            {% for player_id, player in daily_players.items() %}
+                <div class="player">
+                    <strong>Player {{ player_id }}</strong><br>
+                    Points: {{ player.points }}<br>
+                    Last Choice: {{ 'Higher' if player.higher == 1 else 'Lower' if player.higher == 0 else 'N/A' }}<br>
+                    All Choices: 
+                    {% for choice in player.choices %}
+                        {{ 'Higher' if choice == 1 else 'Lower' if choice == 0 else 'N/A' }}{% if not loop.last %}, {% endif %}
+                    {% endfor %}
+                </div>
+            {% endfor %}
+        </div>
+
+        {% if daily_state.winner %}
+            <div class="winner">
+                Winner: Player {{ daily_state.winner }} with {{ daily_state.winner_points }} points!
+            </div>
+        {% endif %}
+
+        <div class="footer">
+            <form action="{{ url_for('daily_run') }}" method="get">
+                <button type="submit" class="button">Play Next Round</button>
+            </form>
+            <form action="{{ url_for('home') }}" method="get" style="margin-top: 10px;">
+                <button type="submit" class="button">Back to Home</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

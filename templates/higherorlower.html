@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Higher or Lower Game</title>
+    <style>
+        body {
+            background-color: white;
+            color: #333;
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+        .content {
+            max-width: 600px;
+            margin: auto;
+            text-align: left;
+            padding: 20px;
+            border: 2px solid green;
+            border-radius: 8px;
+        }
+        h1 {
+            color: green;
+        }
+        button {
+            background-color: green;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            margin-top: 20px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        button:hover {
+            background-color: darkgreen;
+        }
+    </style>
+</head>
+<body>
+    <div class="content">
+        <h1>Higher or Lower</h1>
+        <p>
+            Welcome to the "Higher or Lower" game! The objective is simple: you need to predict whether the next card will be of a higher or lower value than the current card.
+        </p>
+        <p>
+            - If you believe the next card is higher, select "Higher" (input 1).
+        </p>
+        <p>
+            - If you believe the next card is lower, select "Lower" (input 0).
+        </p>
+        <p>
+            Each round, you'll receive points for correct guesses, and the game continues until you decide to stop!
+        </p>
+        <p>
+            <strong>Functionality:</strong>
+        </p>
+        <pre>
+def updateGameState(daily_state):
+    # daily_state is a dictionary with the following structure:
+    # {
+    #     'cards': [],
+    #     'winner': None,
+    #     'winner_points': 0
+    # }
+    
+    # Your logic to determine the next guess (1 or 0) goes here.
+    return 1  # Or return 0 based on your game logic.
+        </pre>
+        <button onclick="location.href='/'">Home</button>
+        <button onclick="location.href='/upload_file'">Upload Code</button>
+    </div>
+</body>
+</html>

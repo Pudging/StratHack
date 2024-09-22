@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Learn Poker</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #ffffff; /* White background */
+            color: #2e7d32; /* Green text for body */
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .container {
+            max-width: 800px;
+            text-align: left; /* Keep text left-justified */
+        }
+
+        h1, h2 {
+            color: #1b5e20; /* Darker green for headings */
+            text-align: center; /* Center headings */
+        }
+
+        ul, ol {
+            margin-left: 20px;
+        }
+
+        pre {
+            background-color: #f1f8e9;
+            border: 1px solid #c8e6c9;
+            padding: 10px;
+            overflow-x: auto;
+            color: #333; /* Dark text color for code */
+        }
+
+        code {
+            color: #333; /* Dark text color for inline code */
+        }
+
+        .button {
+            display: inline-block;
+            padding: 10px 20px;
+            margin: 20px auto;
+            background-color: #1b5e20; /* Green button background */
+            color: white; /* White text for the button */
+            text-decoration: none; /* Remove underline */
+            border-radius: 5px; /* Rounded corners */
+            text-align: center;
+        }
+
+        .button:hover {
+            background-color: #2e7d32; /* Darker green on hover */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>How to Play Poker</h1>
+        <p>Poker is a popular card game that combines skill, strategy, and luck. The objective is to win chips by either having the best hand or convincing other players to fold.</p>
+
+        <h2>Basic Rules</h2>
+        <ul>
+            <li>Each player is dealt a hand of cards.</li>
+            <li>Players can bet, call, raise, or fold based on their cards.</li>
+            <li>The best five-card hand wins the pot.</li>
+        </ul>
+
+        <h2>Hands Ranking</h2>
+        <ol>
+            <li>Royal Flush (T, K, Q, J, A all same suit)</li>
+            <li>Straight Flush  (5 cards in a row all same suit)</li>
+            <li>Four of a Kind</li>
+            <li>Full House (2 of the same type, 3 of the same type)</li>
+            <li>Flush (5 cards same suit)</li>
+            <li>Straight (5 Cards in a row)</li>
+            <li>Three of a Kind</li>
+            <li>Two Pair (Two pairs of cards that are the same type)</li>
+            <li>One Pair (A pair of two cards)</li>
+            <li>High Card</li>
+        </ol>
+
+        <h2>Implementing Your Poker Bot</h2>
+        <p>Below is the Python code snippet for the <code>updateGameState</code> method in your poker bot:</p>
+
+        <pre>
+<code>
+def updateGameState(game_state, player_id):
+    # Sample logic for decision making
+    action = "call"  # or "fold", "raise"
+    amt_bet = 10     # amount to bet, set according to your logic
+    money = 100      # remaining money for the player
+    
+    # Constructing the return string
+    return f"{player_id},{action},{False},{amt_bet},,{money}"
+</code>
+        </pre>
+
+        <h2>Game State Structure</h2>
+        <p>Your game state will look like this:</p>
+        <pre>
+<code>
+game_state = {
+    'cards': [],
+    'turn': 0,
+    'last_action': None,
+    'turn_player': 0,
+    'pot': 0,
+    'winner': 0,
+    'players': [],
+    'recent_actions': [],
+    'highest_total_bet': 0
+}
+</code>
+        </pre>
+        
+        <p>Make sure to adjust the logic based on the current state of the game!</p>
+        
+        <h2>Next Steps</h2>
+        <p style="text-align: center;">
+            <a href="/upload_file" class="button">Upload a File</a>
+        </p>
+    </div>
+</body>
+</html>

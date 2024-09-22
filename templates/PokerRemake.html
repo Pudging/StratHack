@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Poker Page</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 20px;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+
+        h1 {
+            text-align: center;
+            color: #4CAF50;
+        }
+
+        h2 {
+            color: #333;
+            border-bottom: 2px solid #4CAF50;
+            padding-bottom: 10px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            margin: 5px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        a {
+            display: inline-block;
+            margin-top: 20px;
+            text-decoration: none;
+            color: #4CAF50;
+            font-weight: bold;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .recent-actions {
+            margin-top: 20px;
+            background-color: #fff;
+            padding: 10px;
+            border: 1px solid #ddd;
+        }
+    </style>
+</head>
+<body>
+    <h1>Welcome to the Poker Page!</h1>
+    <p>This page is dedicated to poker.</p>
+    
+    <h2>Winner: {{ game_state['winner'] if game_state['winner'] else 'TBD' }}</h2>
+
+    <form action="{{ url_for('play_round') }}" method="POST" style="display: inline;">
+        <button type="submit">Play Round</button>
+    </form>
+
+    <form action="{{ url_for('reset_round') }}" method="POST" style="display: inline;">
+        <button type="submit">Reset Round</button>
+    </form>
+
+    <h2>Recent Actions</h2>
+    <div class="recent-actions" id="recent-actions">
+        <!-- Recent actions will be populated here -->
+    </div>
+
+    <h2>Game State</h2>
+    <table id="game-state-table">
+        <thead>
+            <tr>
+                <th>Cards</th>
+                <th>Turn</th>
+                <th>Last Action</th>
+                <th>Turn Player</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td id="cards"></td>
+                <td id="turn"></td>
+                <td id="last-action"></td>
+                <td id="turn-player"></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h2>Players</h2>
+    <table id="players-table">
+        <thead>
+            <tr>
+                <th>Player ID</th>
+                <th>Action</th>
+                <th>Folded</th>
+                <th>Amount Bet</th>
+                <th>Cards</th>
+                <th>Money</th>
+            </tr>
+        </thead>
+        <tbody id="players-body">
+            <!-- Player data will be populated here -->
+        </tbody>
+    </table>
+
+    <a href="/">Back to Home</a>
+
+    <script>
+        function fetchGameState() {
+            fetch('/api/gamestate')
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('cards').innerText = data.cards.join(', ');
+                    document.getElementById('turn').innerText = data.turn;
+                    document.getElementById('last-action').innerText = data.last_action || 'N/A';
+                    document.getElementById('turn-player').innerText = data.turn_player;
+                    document.getElementById('recent-actions').innerText = data.recent_actions.join('\n') || 'No recent actions.';
+                })
+                .catch(error => console.error('Error fetching game state:', error));
+        }
+
+        function fetchPlayers() {
+            fetch('/api/players')
+                .then(response => response.json())
+                .then(data => {
+                    const playersBody = document.getElementById('players-body');
+                    playersBody.innerHTML = ''; // Clear previous data
+        
+                    if (typeof data === 'object') {
+                        for (const playerId in data) {
+                            const player = data[playerId];
+                            const action = player.action || 'N/A';
+                            const folded = player.folded
+                            const cards = player.cards.length > 0 ? player.cards.join(', ') : 'N/A';
+                            const amtBet = player.amt_bet || 0;
+                            const money = player.money || 0;
+
+                            const row = document.createElement('tr');
+                            row.innerHTML = `
+                                <td>${playerId}</td>
+                                <td>${action}</td>
+                                <td>${folded}</td>
+                                <td>${amtBet}</td>
+                                <td>${cards}</td>
+                                <td>${money}</td>
+                            `;
+                            playersBody.appendChild(row);
+                        }
+                    }
+                })
+                .catch(error => console.error('Error fetching players:', error));
+        }
+
+        window.onload = function() {
+            fetchGameState();
+            fetchPlayers();
+        };
+    </script>
+</body>
+</html>

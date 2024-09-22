@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload New File</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            background-color: #4CAF50; /* Green background */
+            border-radius: 10px; /* Rounded corners */
+            padding: 50px; /* Increased padding for a larger container */
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 400px; /* Increased width for a larger block */
+        }
+        h1 {
+            color: white;
+            margin-bottom: 20px;
+        }
+        form {
+            margin-bottom: 20px;
+        }
+        input[type="file"] {
+            margin: 10px 0;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            width: 100%; /* Full width */
+            box-shadow: inset 0 1px 5px rgba(0, 0, 0, 0.1);
+        }
+        input[type="submit"] {
+            background-color: white; /* White button */
+            color: #4CAF50; /* Green text */
+            border: none;
+            border-radius: 5px;
+            padding: 10px;
+            cursor: pointer;
+            width: 100%; /* Full width */
+            font-weight: bold;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            transition: background 0.3s;
+        }
+        input[type="submit"]:hover {
+            background-color: #45a049; /* Darker green on hover */
+        }
+        .alert {
+            color: red;
+        }
+        .success {
+            color: green;
+        }
+        a {
+            display: inline-block;
+            margin-top: 10px;
+            color: white;
+            text-decoration: underline;
+        }
+        .message {
+            color: white;
+            margin-top: 20px; /* Add some spacing */
+        }
+        .file-list {
+            text-align: left; /* Align list to the left */
+            margin-top: 20px;
+            color: white; /* Ensure the text is visible */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Upload New File</h1>
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <div class="alert">
+                    {% for message in messages %}
+                        {{ message }}<br>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+        <form method="post" enctype="multipart/form-data">
+            <input type="file" name="file" required>
+            <input type="submit" value="Upload">
+        </form>
+
+        <div class="file-list">
+            <h2>Uploaded Files</h2>
+            <form method="post" action="{{ url_for('run_files') }}">
+                {% for file in uploaded_files %}
+                    <input type="checkbox" name="files[]" value="{{ file }}"> {{ file }}<br>
+                {% endfor %}
+                <input type="submit" value="Run Selected Files">
+            </form>
+        </div>
+        
+        {% if file_exists %}
+            <p class="message">File "{{ filename }}" uploaded. <a href="{{ url_for('delete_file', name=filename) }}">Delete this file</a></p>
+        {% endif %}
+
+        <!-- New button to redirect to realPoker page -->
+        <form action="{{ url_for('realPoker') }}" method="get">
+            <input type="submit" value="Go to Poker Game" style="background-color: white; color: #4CAF50; width: 100%; margin-top: 20px;">
+        </form>
+
+        <!-- New button to redirect to daily page -->
+        <form action="{{ url_for('daily') }}" method="get">
+            <input type="submit" value="Go to Higher or Lower" style="background-color: white; color: #4CAF50; width: 100%; margin-top: 20px;">
+        </form>
+
+        <!-- New button to redirect to home page -->
+        <form action="{{ url_for('home') }}" method="get">
+            <input type="submit" value="Back to Home" style="background-color: white; color: #4CAF50; width: 100%; margin-top: 20px;">
+        </form>
+    </div>
+</body>
+</html>
